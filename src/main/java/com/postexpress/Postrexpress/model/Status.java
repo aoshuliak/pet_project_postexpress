@@ -1,4 +1,8 @@
 package com.postexpress.Postrexpress.model;
 
-public class Status {
+public enum Status {
+    SENT,
+    DELIVERED,
+    RECEIVED,
+    COMING
 }
