@@ -39,19 +39,36 @@ public class User  {
     @JoinColumn(name = "role")
     private Role role;
 
+    @OneToOne
+    @JoinColumn(name = "pack_id")
+    private Package pack;
 
     public User() {
     }
 
+//    @Override
+//    public String toString() {
+//        return "User {" +
+//                "id = " + id +
+//                ", firstName = '" + firstName + '\'' +
+//                ", lastName = '" + lastName + '\'' +
+//                ", email = '" + email + '\'' +
+//                ", password = '" + password + '\'' +
+//                ", role = " + role +
+//                "} ";
+//    }
+
+
     @Override
     public String toString() {
-        return "User {" +
-                "id = " + id +
-                ", firstName = '" + firstName + '\'' +
-                ", lastName = '" + lastName + '\'' +
-                ", email = '" + email + '\'' +
-                ", password = '" + password + '\'' +
-                ", role = " + role +
-                "} ";
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", package=" + pack +
+                '}';
     }
 }
