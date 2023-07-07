@@ -1,8 +1,6 @@
 package com.postexpress.Postrexpress.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -10,6 +8,8 @@ import javax.persistence.*;
 @Table(name = "packages")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Package {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
