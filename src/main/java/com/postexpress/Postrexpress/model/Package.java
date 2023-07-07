@@ -29,7 +29,8 @@ public class Package {
     @JoinColumn(name = "addresser_id")
     private User addresser;
 
-    @JoinColumn(name = "status")
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @Override
