@@ -3,6 +3,8 @@ package com.postexpress.Postrexpress.service.impl;
 import com.postexpress.Postrexpress.model.User;
 import com.postexpress.Postrexpress.repository.UserRepository;
 import com.postexpress.Postrexpress.service.UserService;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -52,5 +54,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean userExistsById(long id) {
         return userRepository.existsById(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
     }
 }

@@ -5,6 +5,7 @@ import com.postexpress.Postrexpress.model.Role;
 import com.postexpress.Postrexpress.model.User;
 import com.postexpress.Postrexpress.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +42,11 @@ public class AuthController {
         user.setPassword(hashedPassword);
         user.setRole(Role.USER);
         User newUser = userService.create(UserDTO.transformToEntity(user));
-        return "redirect:/";
+        return "redirect:/login";
+    }
+
+    @GetMapping("/hello")
+    public String hello(){
+        return "hello";
     }
 }

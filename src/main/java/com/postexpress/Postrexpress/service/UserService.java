@@ -2,10 +2,11 @@ package com.postexpress.Postrexpress.service;
 
 
 import com.postexpress.Postrexpress.model.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
     User create(User user);
     User readById(long id);
     User update(User user);
