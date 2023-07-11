@@ -41,6 +41,6 @@ public class AuthController {
         user.setPassword(hashedPassword);
         user.setRole(Role.USER);
         User newUser = userService.create(UserDTO.transformToEntity(user));
-        return "redirect:/";
+        return "redirect:/users/all";
     }
 }
