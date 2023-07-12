@@ -16,14 +16,14 @@ public class PackageTransformer {
         );
     }
 
-    public static Package convertToEntity(PackageDTO packageDTO, User recipient, User addresser, Status status) {
+    public static Package convertToEntity(PackageDTO packageDTO) {
         Package pack = new Package();
         pack.setId(packageDTO.getId());
         pack.setName(packageDTO.getName());
         pack.setDescription(packageDTO.getDescription());
-        pack.setRecipient(recipient);
-        pack.setAddresser(addresser);
-        pack.setStatus(status);
+        pack.setRecipient(packageDTO.getRecipient());
+        pack.setAddresser(packageDTO.getAddresser());
+        pack.setStatus(packageDTO.getStatus());
         return pack;
     }
 
