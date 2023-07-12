@@ -65,9 +65,12 @@
       <div class="col-sm-8">
         <select class="form-control" id="role" name="role">
                         <span th:each="role : ${roles}">
-                            <option th:if="${role == user.role}" th:selected="${true}" th:text="${role.name.substring(0, 1) + role.name.substring(1).toLowerCase()}"
+                            <option th:if="${role == user.role}"
+                                    th:selected="${true}"
+                                    th:text="${role.name.substring(0, 1) + role.name.substring(1).toLowerCase()}"
                                     th:value="${role}"/>
-                            <option th:text="${role.name.substring(0, 1) + role.name.substring(1).toLowerCase()}" th:unless="${role == user.role}"
+                            <option th:text="${role.name.substring(0, 1) + role.name.substring(1).toLowerCase()}"
+                                    th:unless="${role == user.role}"
                                     th:value="${role}"/>
                         </span>
         </select>
