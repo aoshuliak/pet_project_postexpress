@@ -1,0 +1,148 @@
+<!-- create_package.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Package</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input[type="text"],
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .form-group input[type="submit"],
+        .form-group input[type="reset"] {
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .form-group input[type="submit"]:hover,
+        .form-group input[type="reset"]:hover {
+            background-color: #45a049;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+<h1>Create Package</h1>
+<form th:href="@{/packages/{user_id}/create(user_id=${user_id})}" method="post" onsubmit="return validateForm()">
+    <div class="form-group new-line">
+        <label>Package Name:</label>
+        <input type="text" th:field="*{package.name}" pattern="^[A-Za-z0-9]{3,12}$" title="Only letters and numbers with size from 3 to 12 size are allowed" required>
+        <div class="error-message" id="nameError"></div>
+    </div>
+    <div class="form-group new-line">
+        <label>Package Description:</label>
+        <input type="text" th:field="*{package.description}" pattern="^[A-Za-z0-9 ]{1,255}$" title="Only letters, numbers and spaces up to 255 size are allowed" required>
+        <div class="error-message" id="descriptionError"></div>
+    </div>
+    <div class="form-group new-line">
+        <label for="status">Status:</label>
+        <select id="status" name="status" required>
+            <option value="" selected disabled>Select Status</option>
+            <option th:each="status : ${status}" th:value="${status}" th:text="${status}"></option>
+        </select>
+        <div class="error-message" id="statusError"></div>
+    </div>
+    <div class="form-group new-line">
+        <label for="users">Package Recipients:</label>
+        <select id="users" name="users" required>
+            <option value="" selected disabled>Select Recipient</option>
+            <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.firstName} + ' ' + ${user.lastName}"></option>
+        </select>
+        <div class="error-message" id="usersError"></div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create">
+        <input type="reset" value="Clear">
+    </div>
+</form>
+
+<script>
+    function validateForm() {
+        var name = document.getElementById("name").value;
+        var description = document.getElementById("description").value;
+        var status = document.getElementById("status").value;
+        var users = document.getElementById("users").value;
+
+        var nameError = document.getElementById("nameError");
+        var descriptionError = document.getElementById("descriptionError");
+        var statusError = document.getElementById("statusError");
+        var usersError = document.getElementById("usersError");
+
+        nameError.innerHTML = "";
+        descriptionError.innerHTML = "";
+        statusError.innerHTML = "";
+        usersError.innerHTML = "";
+
+        var isValid = true;
+
+        if (!name || !name.match(/^[A-Za-z0-9]{3,12}$/)) {
+            nameError.innerHTML = "Only letters and numbers with size from 3 to 12 size are allowed";
+            isValid = false;
+        }
+
+        if (!description || !description.match(/^[A-Za-z0-9 ]{1,255}$/)) {
+            descriptionError.innerHTML = "Only letters, numbers and spaces up to 255 size are allowed";
+            isValid = false;
+        }
+
+        if (!status) {
+            statusError.innerHTML = "Please select a status.";
+            isValid = false;
+        }
+
+        if (!users) {
+            usersError.innerHTML = "Please select a recipient.";
+            isValid = false;
+        }
+
+        return isValid;
+    }
+</script>
+</body>
+</html>
