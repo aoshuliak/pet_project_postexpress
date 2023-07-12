@@ -33,9 +33,10 @@ public class User  {
     private String password;
 
     @JoinColumn(name = "role")
+    @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "recipient", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "addresser", cascade = CascadeType.REMOVE)
     private List<Package> packages;
 
     public User(long id, String firstName, String lastName, String email, String password, Role role) {

@@ -10,5 +10,7 @@ public interface PackageService {
     Package readById(long id);
     Package update(Package pack);
     void delete(long id);
+
     List<Package> getAll();
+    List<Package> getByUserId(long userId);
 }

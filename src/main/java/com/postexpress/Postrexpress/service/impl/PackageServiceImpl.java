@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +42,12 @@ public class PackageServiceImpl implements PackageService {
     @Override
     public List<Package> getAll() {
         return packageRepository.findAll();
+    }
+
+    @Override
+    public List<Package> getByUserId(long userId) {
+        List<Package> packages = packageRepository.getByUserId(userId);
+        return packages.isEmpty() ? new ArrayList<>() : packages;
     }
 
     public Package findByAddresser_Email(String email) {

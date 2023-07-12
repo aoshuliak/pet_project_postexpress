@@ -3,6 +3,7 @@ package com.postexpress.Postrexpress.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "packages")
@@ -22,11 +23,15 @@ public class Package {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "recipient_id")
+    @JoinColumn(name = "recipient")
     private User recipient;
 
+    @ManyToMany
+    @JoinColumn(name = "recipients")
+    private List<User> recipients;
+
     @ManyToOne
-    @JoinColumn(name = "addresser_id")
+    @JoinColumn(name = "addresser")
     private User addresser;
 
     @Column(name = "status")
