@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Packages</title>
+    <!-- Add your CSS and JavaScript references here -->
+</head>
+<body>
+<h1>User Packages</h1>
+<p>User: <span th:text="${user}"></span></p>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <!-- Add table headers for other properties of Package -->
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="package : ${packages}">
+        <td th:text="${package.id}"></td>
+        <!-- Display other properties of Package -->
+        <td>
+            <a th:href="@{/packages/{user_id}/read/{pack_id}(user_id=${user_id}, pack_id=${package.id})}">Read</a>
+            <a th:href="@{/packages/{user_id}/update/{pack_id}(user_id=${user_id}, pack_id=${package.id})}">Update</a>
+            <a th:href="@{/packages/{user_id}/delete/{pack_id}(user_id=${user_id}, pack_id=${package.id})}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
