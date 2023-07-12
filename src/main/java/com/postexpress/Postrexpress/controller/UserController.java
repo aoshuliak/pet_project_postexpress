@@ -46,15 +46,15 @@ public class UserController {
     public String update(@PathVariable long id,
                          Model model,
                          @Validated @ModelAttribute("user") UserDTO user,
-                         @RequestParam("role") Role role,
-                         BindingResult result) {
-        User oldUser = userService.readById(id);
+                         BindingResult result,
+                         @RequestParam("role") Role role) {
         if (result.hasErrors()) {
-            user.setRole(oldUser.getRole());
+            user.setRole(userService.readById(id).getRole());
             model.addAttribute("user", user);
             model.addAttribute("roles", Role.values());
             return "update-user";
         }
+        User oldUser = userService.readById(id);
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
         if (oldUser.getRole().equals(Role.USER)) {
