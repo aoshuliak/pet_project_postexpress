@@ -12,4 +12,13 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    // Handle 404 - Resource Not Found
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ModelAndView handleResourceNotFoundException(NoHandlerFoundException ex) {
+        logger.error("Resource Not Found", ex);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("error/404");
+        return modelAndView;
+    }
+
 }
