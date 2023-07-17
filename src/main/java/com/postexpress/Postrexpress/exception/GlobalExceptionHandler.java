@@ -21,4 +21,13 @@ public class GlobalExceptionHandler {
         return modelAndView;
     }
 
+    // Handle 500 - Internal Server Error
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handleInternalServerError(Exception ex) {
+        logger.error("Internal Server Error", ex);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("error/500");
+        return modelAndView;
+    }
+
 }
