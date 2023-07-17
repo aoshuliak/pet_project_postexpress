@@ -9,7 +9,9 @@ import com.postexpress.Postrexpress.model.User;
 import com.postexpress.Postrexpress.service.PackageService;
 import com.postexpress.Postrexpress.service.UserService;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,7 +35,13 @@ public class PackageController {
 
     @GetMapping("/{user_id}/create")
     public String create(@PathVariable("user_id") long userId,
-                         Model model){
+                         Model model,
+                         Authentication authentication){
+        User user = userService.findByEmail(authentication.getName());
+        if (userId != user.getId() && !user.getRole().equals(Role.ADMIN) ) {
+            throw new AccessDeniedException("Access Denied");
+        }
+
         List<User> recipients = userService.getAll();
 
         model.addAttribute("package", new Package());
@@ -49,9 +57,15 @@ public class PackageController {
                          @Validated @ModelAttribute("package") Package pack,
                          @RequestParam("users") long newUserId,
                          @RequestParam("status") Status status,
-                         BindingResult result) {
+                         BindingResult result,
+                         Authentication authentication) {
         if (result.hasErrors()) {
             return "create_package";
+        }
+
+        User user = userService.findByEmail(authentication.getName());
+        if (userId != user.getId() && !user.getRole().equals(Role.ADMIN) ) {
+            throw new AccessDeniedException(String.format("Access for '%s' denied", user.getId()));
         }
 
         User addresser = userService.readById(userId);
@@ -68,8 +82,12 @@ public class PackageController {
     @GetMapping("/{user_id}/read/{pack_id}")
     public String read(@PathVariable("user_id") long userId,
                        @PathVariable("pack_id") long packId,
-                       Model model) {
-        User user = userService.readById(userId);
+                       Model model,
+                       Authentication authentication) {
+        User user = userService.findByEmail(authentication.getName());
+        if (userId != user.getId() && !user.getRole().equals(Role.ADMIN) ) {
+            throw new AccessDeniedException(String.format("Access for '%s' denied", user.getId()));
+        }
         Package pack = user.getPackages().stream()
                 .filter(p -> p.getId() == packId).findFirst().orElseThrow(() -> new RuntimeException("Pack not found!"));
         model.addAttribute("package", pack);
@@ -80,8 +98,12 @@ public class PackageController {
     @GetMapping("/{user_id}/update/{pack_id}")
     public String update(@PathVariable("user_id") long userId,
                          @PathVariable("pack_id") long packId,
-                         Model model) {
-        User user = userService.readById(userId);
+                         Model model,
+                         Authentication authentication) {
+        User user = userService.findByEmail(authentication.getName());
+        if (userId != user.getId() && !user.getRole().equals(Role.ADMIN) ) {
+            throw new AccessDeniedException(String.format("Access for '%s' denied", user.getId()));
+        }
         Package pack = user.getPackages().stream()
                 .filter(p -> p.getId() == packId).findFirst().orElseThrow(() -> new RuntimeException("Pack not found!"));
 
@@ -99,9 +121,16 @@ public class PackageController {
                          @PathVariable("pack_id") long packId,
                          @RequestParam("status") Status status,
                          @RequestParam("users") long newUserId,
-                         @Validated @ModelAttribute("package") Package pack) {
+                         @Validated @ModelAttribute("package") Package pack,
+                         Authentication authentication) {
+
         Package oldPack = packageService.readById(packId);
-        User recipient = userService.readById(newUserId);
+        User recipient = userService.findByEmail(authentication.getName());
+
+        if (userId != recipient.getId() && !recipient.getRole().equals(Role.ADMIN) ) {
+            throw new AccessDeniedException(String.format("Access for '%s' denied", recipient.getId()));
+        }
+
         pack.setAddresser(oldPack.getAddresser());
         pack.setRecipient(recipient);
         pack.setStatus(status);
@@ -113,8 +142,12 @@ public class PackageController {
     @GetMapping("/{user_id}/delete/{pack_id}")
     public String delete(@PathVariable("user_id") long userId,
                          @PathVariable("pack_id") long packId,
-                         Model model) {
-        User user = userService.readById(userId);
+                         Model model,
+                         Authentication authentication) {
+        User user = userService.findByEmail(authentication.getName());
+        if (userId != user.getId() && !user.getRole().equals(Role.ADMIN) ) {
+            throw new AccessDeniedException(String.format("Access for '%s' denied", user.getId()));
+        }
         List<Package> packages = user.getPackages();
         model.addAttribute("packages", packages);
         packageService.delete(packId);
@@ -123,12 +156,15 @@ public class PackageController {
 
     @GetMapping("/{user_id}/all")
     public String getAll(@PathVariable("user_id") long userId,
-                         Model model) {
-        User user = userService.readById(userId);
+                         Model model,
+                         Authentication authentication) {
+        User user = userService.findByEmail(authentication.getName());
+        if (userId != user.getId() && !user.getRole().equals(Role.ADMIN) ) {
+            throw new AccessDeniedException(String.format("Access for '%s' denied", user.getId()));
+        }
         List<Package> packages = user.getPackages();
         model.addAttribute("packages", packages);
         model.addAttribute("user", user.getFirstName() + " " + user.getLastName());
         return "user_packages";
     }
-
 }

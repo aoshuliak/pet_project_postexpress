@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class AuthController {
+
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -23,6 +24,30 @@ public class AuthController {
 
     public AuthController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/login")
+    public String login(Model model) {
+        model.addAttribute("user", new UserDTO());
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String login(@Validated @ModelAttribute("user") UserDTO user,
+                               BindingResult result) {
+        if (result.hasErrors()) {
+            return "login";
+        }
+
+        // Assuming you have a userService.authenticateUser() method to validate the user credentials
+        boolean isAuthenticated = userService.authenticateUser(user.getEmail(), user.getPassword());
+
+        if (isAuthenticated) {
+            return "redirect:/users/all";
+        } else {
+            result.rejectValue("email", "error.user", "Invalid email or password");
+            return "login";
+        }
     }
 
     @GetMapping("/register")

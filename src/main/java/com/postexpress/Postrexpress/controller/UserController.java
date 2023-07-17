@@ -1,10 +1,13 @@
 package com.postexpress.Postrexpress.controller;
 
 import com.postexpress.Postrexpress.dto.UserDTO;
+import com.postexpress.Postrexpress.model.Package;
 import com.postexpress.Postrexpress.model.Role;
 import com.postexpress.Postrexpress.model.User;
 import com.postexpress.Postrexpress.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,16 +30,24 @@ public class UserController {
 
     @GetMapping("/{id}/read")
     public String read(@PathVariable long id,
-                       Model model) {
-        User user = userService.readById(id);
+                       Model model,
+                       Authentication authentication) {
+        User user = userService.findByEmail(authentication.getName());
+        if (id != user.getId() && !user.getRole().equals(Role.ADMIN)) {
+            throw new AccessDeniedException("Access Denied");
+        }
         model.addAttribute("user", user);
         return "user-info";
     }
 
     @GetMapping("/{id}/update")
     public String update(@PathVariable long id,
-                         Model model) {
-        User user = userService.readById(id);
+                         Model model,
+                         Authentication authentication) {
+        User user = userService.findByEmail(authentication.getName());
+        if (id != user.getId() && !user.getRole().equals(Role.ADMIN)) {
+            throw new AccessDeniedException("Access Denied");
+        }
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
         return "update-user";
@@ -45,15 +56,22 @@ public class UserController {
     @PostMapping("/{id}/update")
     public String update(@PathVariable long id,
                          Model model,
-                         @Validated @ModelAttribute("user") UserDTO user,
+                         @Validated @ModelAttribute("user") UserDTO userDTO,
                          BindingResult result,
-                         @RequestParam("role") Role role) {
+                         @RequestParam("role") Role role,
+                         Authentication authentication) {
         if (result.hasErrors()) {
-            user.setRole(userService.readById(id).getRole());
-            model.addAttribute("user", user);
+            userDTO.setRole(userService.readById(id).getRole());
+            model.addAttribute("user", userDTO);
             model.addAttribute("roles", Role.values());
             return "update-user";
         }
+
+        User user = userService.findByEmail(authentication.getName());
+        if (id != user.getId() && !user.getRole().equals(Role.ADMIN)) {
+            throw new AccessDeniedException("Access Denied");
+        }
+
         User oldUser = userService.readById(id);
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
@@ -62,18 +80,28 @@ public class UserController {
         } else {
             user.setRole(role);
         }
-        userService.update(UserDTO.transformToEntity(user));
+        userService.update(UserDTO.transformToEntity(userDTO));
         return "redirect:/users/" + id + "/read";
     }
 
     @GetMapping("/{id}/delete")
-    public String delete(@PathVariable("id") long id){
+    public String delete(@PathVariable("id") long id,
+                         Authentication authentication){
+        User user = userService.findByEmail(authentication.getName());
+        if (id != user.getId() && !user.getRole().equals(Role.ADMIN)) {
+            throw new AccessDeniedException("Access Denied");
+        }
         userService.delete(id);
         return "redirect:/users/all";
     }
 
     @GetMapping("/all")
-    public String getAll(Model model) {
+    public String getAll(Model model,
+                         Authentication authentication) {
+        User user = userService.findByEmail(authentication.getName());
+        if (!user.getRole().equals(Role.ADMIN)) {
+            throw new AccessDeniedException("Access Denied");
+        }
         model.addAttribute("users", userService.getAll());
         return "users-list";
     }
