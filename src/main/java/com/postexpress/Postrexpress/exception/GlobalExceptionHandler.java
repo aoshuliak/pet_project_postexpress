@@ -30,4 +30,12 @@ public class GlobalExceptionHandler {
         return modelAndView;
     }
 
+    // Handle 403 - Forbidden
+    @ExceptionHandler(AccessDeniedException.class)
+    public ModelAndView handleAccessDeniedException(AccessDeniedException ex) {
+        logger.error("Forbidden", ex);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("error/403");
+        return modelAndView;
+    }
 }
