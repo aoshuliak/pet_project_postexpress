@@ -26,10 +26,6 @@ public class Package {
     @JoinColumn(name = "recipient")
     private User recipient;
 
-    @ManyToMany
-    @JoinColumn(name = "recipients")
-    private List<User> recipients;
-
     @ManyToOne
     @JoinColumn(name = "addresser")
     private User addresser;
