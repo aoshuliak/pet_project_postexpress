@@ -1,5 +1,6 @@
 package com.postexpress.Postrexpress.service.impl;
 
+import com.postexpress.Postrexpress.model.Package;
 import com.postexpress.Postrexpress.model.User;
 import com.postexpress.Postrexpress.repository.UserRepository;
 import com.postexpress.Postrexpress.service.UserService;
@@ -37,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(long id) {
-        userRepository.deleteById(id);
+        userRepository.delete(readById(id));
     }
 
     @Override
@@ -45,8 +46,18 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findAll();
         return users.isEmpty() ? new ArrayList<>() : users;
     }
+    
     public User findByEmail(String email) {
         return userRepository.getUserByEmail(email);
+    }
+
+    public Optional<User> findByUserEmail(String email) {
+        return userRepository.getByUserEmail(email);
+    }
+
+    public boolean authenticateUser(String email, String password) {
+        User user = findByEmail(email);
+        return user != null && password.equals(user.getPassword());
     }
 
     @Override
