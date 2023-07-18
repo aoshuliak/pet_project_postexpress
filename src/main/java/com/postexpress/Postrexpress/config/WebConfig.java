@@ -29,6 +29,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         interceptor.setParamName("lang");
         registry.addInterceptor(interceptor);
     }
-
+    @Bean
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("languages/message");
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
+    }
 }
 
