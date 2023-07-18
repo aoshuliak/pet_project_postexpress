@@ -10,9 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
 
 @Controller
 public class AuthController {
@@ -42,5 +46,18 @@ public class AuthController {
         user.setRole(Role.USER);
         User newUser = userService.create(UserDTO.transformToEntity(user));
         return "redirect:/users/all";
+    }
+
+    @RequestMapping("/change-language")
+    public String changeLanguage(@RequestParam("lang") String language,
+                                 HttpServletRequest request) {
+        LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+        localeResolver.setLocale(request, null, new Locale(language));
+        return "redirect:/home";
+    }
+
+    @GetMapping("/home")
+    public String homePage(Model model) {
+        return "home";
     }
 }
