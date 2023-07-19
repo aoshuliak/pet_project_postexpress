@@ -3,6 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        /* Добавленные стили */
+        body {
+            padding: 20px;
+        }
+
+        h2 {
+            color: #337ab7;
+        }
+
+        .btn-register {
+            background-color: #5cb85c;
+            color: #fff;
+        }
+
+        .btn-register:hover {
+            background-color: #449d44;
+        }
+
+        .btn-edit {
+            background-color: #f0ad4e;
+            color: #fff;
+        }
+
+        .btn-edit:hover {
+            background-color: #ec971f;
+        }
+
+        .btn-remove {
+            background-color: #d9534f;
+            color: #fff;
+        }
+
+        .btn-remove:hover {
+            background-color: #c9302c;
+        }
+
+        table {
+            margin-top: 20px;
+        }
+
+        /* Дополнительные стили для удобочитаемости */
+        th, td {
+            text-align: center;
+        }
+    </style>
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this user?");
+        }
+    </script>
     <title>List of Users</title>
 </head>
 <body>
@@ -10,7 +61,7 @@
     <h2>List of Users</h2>
     <form th:action="@{/register}" method="get">
         <div align="right">
-            <input class="btn-info btn-lg" type="submit" value="Register new User">
+            <input class="btn-info btn-lg btn-register" type="submit" value="Register new User">
         </div>
     </form>
     <br>
@@ -34,10 +85,10 @@
             <td th:text="${user.email}"/>
 
             <td>
-                <a th:href="@{|/users/${user.id}/update|}">Edit</a>
+                <a class="btn btn-edit" th:href="@{|/users/${user.id}/update|}">Edit</a>
             </td>
             <td>
-                <a th:href="@{|/users/${user.id}/delete|}">Remove</a>
+                <a class="btn btn-remove" th:href="@{|/users/${user.id}/delete|}" onclick="return confirmDelete()">Remove</a>
             </td>
         </tr>
     </table>
