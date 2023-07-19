@@ -47,7 +47,7 @@ public class AuthController {
         boolean isAuthenticated = userService.authenticateUser(user.getEmail(), user.getPassword());
 
         if (isAuthenticated) {
-            return "redirect:/users/all";
+            return "redirect:/home";
         } else {
             result.rejectValue("email", "error.user", "Invalid email or password");
             return "login";
@@ -70,10 +70,10 @@ public class AuthController {
         user.setPassword(hashedPassword);
         user.setRole(Role.USER);
         User newUser = userService.create(UserDTO.transformToEntity(user));
-        return "redirect:/users/all";
+        return "redirect:/home";
     }
 
-    @RequestMapping("/change-language")
+    @PostMapping("/change-language")
     public String changeLanguage(@RequestParam("lang") String language,
                                  HttpServletRequest request) {
         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
