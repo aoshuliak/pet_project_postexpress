@@ -89,7 +89,7 @@
         <div class="error-message" id="statusError"></div>
     </div>
     <div class="form-group new-line">
-        <label for="users">Package Recipients:</label>
+        <label for="users" th:text="#{package_recipients}">Package Recipients:</label>
         <select id="users" name="users" required>
             <option value="" selected disabled>Select Recipient</option>
             <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.firstName} + ' ' + ${user.lastName}"></option>
