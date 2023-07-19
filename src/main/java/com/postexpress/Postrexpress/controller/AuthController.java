@@ -73,7 +73,7 @@ public class AuthController {
         return "redirect:/home";
     }
 
-    @PostMapping("/change-language")
+    @PostMapping("/change")
     public String changeLanguage(@RequestParam("lang") String language,
                                  HttpServletRequest request) {
         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
