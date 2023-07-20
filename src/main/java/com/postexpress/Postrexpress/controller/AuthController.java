@@ -81,7 +81,7 @@ public class AuthController {
         return "redirect:/home";
     }
 
-    @GetMapping("/home")
+    @GetMapping({"/home", "/"})
     public String homePage(Model model) {
         return "home";
     }
