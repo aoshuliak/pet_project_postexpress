@@ -155,6 +155,7 @@ public class PackageController {
     }
 
     @GetMapping("/{user_id}/all")
+    @PreAuthorize("authentication.principal.id == #userId")
     public String getAll(@PathVariable("user_id") long userId,
                          Model model,
                          Authentication authentication) {
