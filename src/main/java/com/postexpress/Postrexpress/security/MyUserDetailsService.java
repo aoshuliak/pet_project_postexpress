@@ -26,14 +26,10 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<User> optUser = userRepository.getByUserEmail(email);
-        if (!optUser.isPresent()) {
+        User user = userRepository.getUserByEmail(email);
+        if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return new org.springframework.security.core.userdetails.User(
-                optUser.get().getEmail(),
-                optUser.get().getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority("USER"))
-        );
+        return user;
     }
 }
