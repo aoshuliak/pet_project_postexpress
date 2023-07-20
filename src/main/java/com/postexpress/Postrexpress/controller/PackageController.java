@@ -160,9 +160,6 @@ public class PackageController {
                          Model model,
                          Authentication authentication) {
         User user = userService.findByEmail(authentication.getName());
-        if (userId != user.getId() && !user.getRole().equals(Role.ADMIN) ) {
-            throw new AccessDeniedException(String.format("Access for '%s' denied", user.getId()));
-        }
         List<Package> packages = user.getPackages();
         model.addAttribute("packages", packages);
         model.addAttribute("user", user.getFirstName() + " " + user.getLastName());
