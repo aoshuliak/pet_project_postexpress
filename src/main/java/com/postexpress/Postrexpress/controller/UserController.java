@@ -37,9 +37,6 @@ public class UserController {
                        Model model,
                        Authentication authentication) {
         User user = userService.findByEmail(authentication.getName());
-        if (id != user.getId() && !user.getRole().equals(Role.ADMIN)) {
-            throw new AccessDeniedException("Access Denied");
-        }
         model.addAttribute("user", user);
         return "user-info";
     }
@@ -50,9 +47,6 @@ public class UserController {
                          Model model,
                          Authentication authentication) {
         User user = userService.findByEmail(authentication.getName());
-        if (id != user.getId() && !user.getRole().equals(Role.ADMIN)) {
-            throw new AccessDeniedException("Access Denied");
-        }
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
         return "update-user";
@@ -74,9 +68,6 @@ public class UserController {
         }
 
         User user = userService.findByEmail(authentication.getName());
-        if (id != user.getId() && !user.getRole().equals(Role.ADMIN)) {
-            throw new AccessDeniedException("Access Denied");
-        }
 
         User oldUser = userService.readById(id);
         String hashedPassword = passwordEncoder.encode(user.getPassword());
@@ -95,9 +86,6 @@ public class UserController {
     public String delete(@PathVariable("id") long id,
                          Authentication authentication){
         User user = userService.findByEmail(authentication.getName());
-        if (id != user.getId() && !user.getRole().equals(Role.ADMIN)) {
-            throw new AccessDeniedException("Access Denied");
-        }
         userService.delete(id);
         return "redirect:/home";
     }
@@ -107,9 +95,6 @@ public class UserController {
     public String getAll(Model model,
                          Authentication authentication) {
         User user = userService.findByEmail(authentication.getName());
-//        if (!user.getRole().equals(Role.ADMIN)) {
-//            throw new AccessDeniedException("Access Denied");
-//        }
         model.addAttribute("users", userService.getAll());
         return "users-list";
     }
