@@ -7,6 +7,7 @@ import com.postexpress.Postrexpress.model.User;
 import com.postexpress.Postrexpress.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 
 @Controller
@@ -29,6 +32,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/read")
+    @PreAuthorize("authentication.principal.id == #id or hasAuthority('ADMIN')")
     public String read(@PathVariable long id,
                        Model model,
                        Authentication authentication) {
@@ -41,6 +45,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/update")
+    @PreAuthorize("authentication.principal.id == #id or hasAuthority('ADMIN')")
     public String update(@PathVariable long id,
                          Model model,
                          Authentication authentication) {
@@ -54,6 +59,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}/update")
+    @PreAuthorize("authentication.principal.id == #id or hasAuthority('ADMIN')")
     public String update(@PathVariable long id,
                          Model model,
                          @Validated @ModelAttribute("user") UserDTO userDTO,
@@ -85,6 +91,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/delete")
+    @PreAuthorize("authentication.principal.id == #id or hasAuthority('ADMIN')")
     public String delete(@PathVariable("id") long id,
                          Authentication authentication){
         User user = userService.findByEmail(authentication.getName());
@@ -92,16 +99,17 @@ public class UserController {
             throw new AccessDeniedException("Access Denied");
         }
         userService.delete(id);
-        return "redirect:/users/all";
+        return "redirect:/home";
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getAll(Model model,
                          Authentication authentication) {
         User user = userService.findByEmail(authentication.getName());
-        if (!user.getRole().equals(Role.ADMIN)) {
-            throw new AccessDeniedException("Access Denied");
-        }
+//        if (!user.getRole().equals(Role.ADMIN)) {
+//            throw new AccessDeniedException("Access Denied");
+//        }
         model.addAttribute("users", userService.getAll());
         return "users-list";
     }
