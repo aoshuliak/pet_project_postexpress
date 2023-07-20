@@ -2,11 +2,16 @@ package com.postexpress.Postrexpress.service.impl;
 
 import com.postexpress.Postrexpress.model.Package;
 import com.postexpress.Postrexpress.model.User;
+import com.postexpress.Postrexpress.repository.PackageRepository;
 import com.postexpress.Postrexpress.repository.UserRepository;
 import com.postexpress.Postrexpress.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +19,9 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+
+    @Autowired
+    private PackageRepository packageRepository;
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -38,6 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(long id) {
+        packageRepository.deleteAll();
         userRepository.delete(readById(id));
     }
 
@@ -46,7 +55,7 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findAll();
         return users.isEmpty() ? new ArrayList<>() : users;
     }
-    
+
     public User findByEmail(String email) {
         return userRepository.getUserByEmail(email);
     }
