@@ -34,14 +34,10 @@ public class PackageController {
     }
 
     @GetMapping("/{user_id}/create")
+    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.id == #userId")
     public String create(@PathVariable("user_id") long userId,
                          Model model,
                          Authentication authentication){
-        User user = userService.findByEmail(authentication.getName());
-        if (userId != user.getId() && !user.getRole().equals(Role.ADMIN) ) {
-            throw new AccessDeniedException("Access Denied");
-        }
-
         List<User> recipients = userService.getAll();
 
         model.addAttribute("package", new Package());
@@ -53,6 +49,7 @@ public class PackageController {
     }
 
     @PostMapping("/{user_id}/create")
+    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.id == #userId")
     public String create(@PathVariable("user_id") long userId,
                          @Validated @ModelAttribute("package") Package pack,
                          @RequestParam("users") long newUserId,
@@ -61,11 +58,6 @@ public class PackageController {
                          Authentication authentication) {
         if (result.hasErrors()) {
             return "create_package";
-        }
-
-        User user = userService.findByEmail(authentication.getName());
-        if (userId != user.getId() && !user.getRole().equals(Role.ADMIN) ) {
-            throw new AccessDeniedException(String.format("Access for '%s' denied", user.getId()));
         }
 
         User addresser = userService.readById(userId);
@@ -80,14 +72,13 @@ public class PackageController {
     }
 
     @GetMapping("/{user_id}/read/{pack_id}")
+    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.id == #userId")
     public String read(@PathVariable("user_id") long userId,
                        @PathVariable("pack_id") long packId,
                        Model model,
                        Authentication authentication) {
-        User user = userService.findByEmail(authentication.getName());
-        if (userId != user.getId() && !user.getRole().equals(Role.ADMIN) ) {
-            throw new AccessDeniedException(String.format("Access for '%s' denied", user.getId()));
-        }
+        User user = userService.readById(userId);
+
         Package pack = user.getPackages().stream()
                 .filter(p -> p.getId() == packId).findFirst().orElseThrow(() -> new RuntimeException("Pack not found!"));
         model.addAttribute("package", pack);
@@ -96,14 +87,13 @@ public class PackageController {
     }
 
     @GetMapping("/{user_id}/update/{pack_id}")
+    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.id == #userId")
     public String update(@PathVariable("user_id") long userId,
                          @PathVariable("pack_id") long packId,
                          Model model,
                          Authentication authentication) {
-        User user = userService.findByEmail(authentication.getName());
-        if (userId != user.getId() && !user.getRole().equals(Role.ADMIN) ) {
-            throw new AccessDeniedException(String.format("Access for '%s' denied", user.getId()));
-        }
+        User user = userService.readById(userId);
+
         Package pack = user.getPackages().stream()
                 .filter(p -> p.getId() == packId).findFirst().orElseThrow(() -> new RuntimeException("Pack not found!"));
 
@@ -117,6 +107,7 @@ public class PackageController {
     }
 
     @PostMapping("/{user_id}/update/{pack_id}")
+    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.id == #userId")
     public String update(@PathVariable("user_id") long userId,
                          @PathVariable("pack_id") long packId,
                          @RequestParam("status") Status status,
@@ -125,11 +116,7 @@ public class PackageController {
                          Authentication authentication) {
 
         Package oldPack = packageService.readById(packId);
-        User recipient = userService.findByEmail(authentication.getName());
-
-        if (userId != recipient.getId() && !recipient.getRole().equals(Role.ADMIN) ) {
-            throw new AccessDeniedException(String.format("Access for '%s' denied", recipient.getId()));
-        }
+        User recipient = userService.readById(userId);
 
         pack.setAddresser(oldPack.getAddresser());
         pack.setRecipient(recipient);
@@ -140,14 +127,13 @@ public class PackageController {
     }
 
     @GetMapping("/{user_id}/delete/{pack_id}")
+    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.id == #userId")
     public String delete(@PathVariable("user_id") long userId,
                          @PathVariable("pack_id") long packId,
                          Model model,
                          Authentication authentication) {
-        User user = userService.findByEmail(authentication.getName());
-        if (userId != user.getId() && !user.getRole().equals(Role.ADMIN) ) {
-            throw new AccessDeniedException(String.format("Access for '%s' denied", user.getId()));
-        }
+        User user = userService.readById(userId);
+
         List<Package> packages = user.getPackages();
         model.addAttribute("packages", packages);
         packageService.delete(packId);
@@ -155,11 +141,11 @@ public class PackageController {
     }
 
     @GetMapping("/{user_id}/all")
-    @PreAuthorize("authentication.principal.id == #userId")
+    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.id == #userId")
     public String getAll(@PathVariable("user_id") long userId,
                          Model model,
                          Authentication authentication) {
-        User user = userService.findByEmail(authentication.getName());
+        User user = userService.readById(userId);
         List<Package> packages = user.getPackages();
         model.addAttribute("packages", packages);
         model.addAttribute("user", user.getFirstName() + " " + user.getLastName());
