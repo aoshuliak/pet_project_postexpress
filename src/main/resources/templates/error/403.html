@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html xmlns:th="http://www.thymeleaf.org"><head>
+  <head>
   <title>403 - Forbidden</title>
   <style>
     body {
@@ -39,8 +39,7 @@
 <body>
 <div class="container">
   <h1>403 - Forbidden</h1>
-  <p>You do not have permission to access this resource.</p>
-  <p>Go back to <a class="link" href="/home">homepage</a>.</p>
-</div>
+  <p th:text="#{no_permission}">You do not have permission to access this resource.</p>
+  <p th:text="#{go_back_to}"></p><a class="link" th:href="@{/users/all}" th:text="#{homepage}"></a></div>
 </body>
 </html>
