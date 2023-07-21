@@ -9,7 +9,9 @@ import com.postexpress.Postrexpress.model.User;
 import com.postexpress.Postrexpress.service.PackageService;
 import com.postexpress.Postrexpress.service.UserService;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,8 +34,10 @@ public class PackageController {
     }
 
     @GetMapping("/{user_id}/create")
+    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.id == #userId")
     public String create(@PathVariable("user_id") long userId,
-                         Model model){
+                         Model model,
+                         Authentication authentication){
         List<User> recipients = userService.getAll();
 
         model.addAttribute("package", new Package());
@@ -45,11 +49,13 @@ public class PackageController {
     }
 
     @PostMapping("/{user_id}/create")
+    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.id == #userId")
     public String create(@PathVariable("user_id") long userId,
                          @Validated @ModelAttribute("package") Package pack,
                          @RequestParam("users") long newUserId,
                          @RequestParam("status") Status status,
-                         BindingResult result) {
+                         BindingResult result,
+                         Authentication authentication) {
         if (result.hasErrors()) {
             return "create_package";
         }
@@ -66,10 +72,13 @@ public class PackageController {
     }
 
     @GetMapping("/{user_id}/read/{pack_id}")
+    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.id == #userId")
     public String read(@PathVariable("user_id") long userId,
                        @PathVariable("pack_id") long packId,
-                       Model model) {
+                       Model model,
+                       Authentication authentication) {
         User user = userService.readById(userId);
+
         Package pack = user.getPackages().stream()
                 .filter(p -> p.getId() == packId).findFirst().orElseThrow(() -> new RuntimeException("Pack not found!"));
         model.addAttribute("package", pack);
@@ -78,10 +87,13 @@ public class PackageController {
     }
 
     @GetMapping("/{user_id}/update/{pack_id}")
+    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.id == #userId")
     public String update(@PathVariable("user_id") long userId,
                          @PathVariable("pack_id") long packId,
-                         Model model) {
+                         Model model,
+                         Authentication authentication) {
         User user = userService.readById(userId);
+
         Package pack = user.getPackages().stream()
                 .filter(p -> p.getId() == packId).findFirst().orElseThrow(() -> new RuntimeException("Pack not found!"));
 
@@ -95,13 +107,17 @@ public class PackageController {
     }
 
     @PostMapping("/{user_id}/update/{pack_id}")
+    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.id == #userId")
     public String update(@PathVariable("user_id") long userId,
                          @PathVariable("pack_id") long packId,
                          @RequestParam("status") Status status,
                          @RequestParam("users") long newUserId,
-                         @Validated @ModelAttribute("package") Package pack) {
+                         @Validated @ModelAttribute("package") Package pack,
+                         Authentication authentication) {
+
         Package oldPack = packageService.readById(packId);
-        User recipient = userService.readById(newUserId);
+        User recipient = userService.readById(userId);
+
         pack.setAddresser(oldPack.getAddresser());
         pack.setRecipient(recipient);
         pack.setStatus(status);
@@ -111,10 +127,13 @@ public class PackageController {
     }
 
     @GetMapping("/{user_id}/delete/{pack_id}")
+    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.id == #userId")
     public String delete(@PathVariable("user_id") long userId,
                          @PathVariable("pack_id") long packId,
-                         Model model) {
+                         Model model,
+                         Authentication authentication) {
         User user = userService.readById(userId);
+
         List<Package> packages = user.getPackages();
         model.addAttribute("packages", packages);
         packageService.delete(packId);
@@ -122,13 +141,14 @@ public class PackageController {
     }
 
     @GetMapping("/{user_id}/all")
+    @PreAuthorize("hasAuthority('ADMIN') or authentication.principal.id == #userId")
     public String getAll(@PathVariable("user_id") long userId,
-                         Model model) {
+                         Model model,
+                         Authentication authentication) {
         User user = userService.readById(userId);
         List<Package> packages = user.getPackages();
         model.addAttribute("packages", packages);
         model.addAttribute("user", user.getFirstName() + " " + user.getLastName());
         return "user_packages";
     }
-
 }

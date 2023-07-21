@@ -74,7 +74,7 @@
     <h1 th:text="#{greeting}"></h1>
     <div class="language-selector">
         <label for="languageForm">Select Language:</label>
-        <form id="languageForm" action="/change-language" method="post">
+        <form id="languageForm" th:action="@{/change}" method="post">
             <select name="lang" onchange="document.getElementById('languageForm').submit()">
                 <option th:value="null" th:text="#{choose}">Choose</option>
                 <option th:value="en" >English</option>

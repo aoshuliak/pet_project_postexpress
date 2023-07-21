@@ -20,6 +20,7 @@ import java.util.Locale;
 
 @Controller
 public class AuthController {
+
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -27,6 +28,30 @@ public class AuthController {
 
     public AuthController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/login")
+    public String login(Model model) {
+        model.addAttribute("user", new UserDTO());
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String login(@Validated @ModelAttribute("user") UserDTO user,
+                               BindingResult result) {
+        if (result.hasErrors()) {
+            return "login";
+        }
+
+        // Assuming you have a userService.authenticateUser() method to validate the user credentials
+        boolean isAuthenticated = userService.authenticateUser(user.getEmail(), user.getPassword());
+
+        if (isAuthenticated) {
+            return "redirect:/home";
+        } else {
+            result.rejectValue("email", "error.user", "Invalid email or password");
+            return "login";
+        }
     }
 
     @GetMapping("/register")
@@ -45,10 +70,10 @@ public class AuthController {
         user.setPassword(hashedPassword);
         user.setRole(Role.USER);
         User newUser = userService.create(UserDTO.transformToEntity(user));
-        return "redirect:/users/all";
+        return "redirect:/home";
     }
 
-    @RequestMapping("/change-language")
+    @PostMapping("/change")
     public String changeLanguage(@RequestParam("lang") String language,
                                  HttpServletRequest request) {
         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
@@ -56,7 +81,7 @@ public class AuthController {
         return "redirect:/home";
     }
 
-    @GetMapping("/home")
+    @GetMapping({"/home", "/"})
     public String homePage(Model model) {
         return "home";
     }
