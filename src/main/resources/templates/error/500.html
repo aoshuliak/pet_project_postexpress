@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html xmlns:th="http://www.thymeleaf.org"><head>
     <title>500 - Internal Server Error</title>
     <style>
         body {
@@ -39,8 +38,8 @@
 <body>
 <div class="container">
     <h1>500 - Internal Server Error</h1>
-    <p  th:text="#{internal_server_error_occurred}">An internal server error occurred. Please try again later.</p>
-    <p th:text="#{go_back_to}">Go back to <a class="link" href="/users/all" th:text="#{homepage}">homepage</a>.</p>
+    <p  th:text="#{internal_server_error_occurred}"></p>
+    <p th:text="#{go_back_to}"></p><a class="link" th:href="@{/users/all}" th:text="#{homepage}"></a>
 </div>
 </body>
 </html>
