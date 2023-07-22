@@ -1,7 +1,5 @@
 package com.postexpress.Postrexpress.security;
 
-import com.postexpress.Postrexpress.model.Role;
-import com.postexpress.Postrexpress.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,9 +9,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -23,6 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
         jsr250Enabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private MyUserDetailsService userDetailsService;
+    @Autowired
+    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -43,13 +42,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/home", "/change", "/register").permitAll()
+                .antMatchers("/home", "/change", "/register", "/").permitAll()
 //                .antMatchers("/users/all/").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/home")
+                .successHandler(customAuthenticationSuccessHandler)
                 .permitAll()
                 .and()
                 .logout()
