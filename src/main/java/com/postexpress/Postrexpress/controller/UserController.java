@@ -87,7 +87,7 @@ public class UserController {
                          Authentication authentication){
         User user = userService.findByEmail(authentication.getName());
         userService.delete(id);
-        return "redirect:/home";
+        return "redirect:/users/all";
     }
 
     @GetMapping("/all")
