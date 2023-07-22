@@ -1,5 +1,6 @@
 package com.postexpress.Postrexpress.security;
 
+import com.postexpress.Postrexpress.model.Role;
 import com.postexpress.Postrexpress.model.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -16,8 +17,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         long userId = ((User) authentication.getPrincipal()).getId();
-
-        response.sendRedirect("/users/" + userId + "/read");
+        String url = "/users/" + userId + "/read";
+        if (((User) authentication.getPrincipal()).getRole().equals(Role.ADMIN)){
+            url ="/users/all";
+        }
+        response.sendRedirect(url);
     }
 }
 
