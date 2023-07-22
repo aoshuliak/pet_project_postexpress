@@ -86,7 +86,8 @@
 <div class="container">
     <h2 th:text="#{greeting}"></h2>
     <p th:text="#{info}">Create and share your packages with the world!</p>
-    <a href="/register" th:text="#{get_started}">Get Started</a>
+    <a th:href="@{/register}" th:text="#{get_started}">Get Started</a>
+    <a th:href="@{/login}" th:text="#{login}">Login</a>
 </div>
 </body>
 </html>
