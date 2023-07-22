@@ -6,46 +6,35 @@
   <title>Title</title>
 </head>
 <body>
-<div class="col-md-offset-2">
-  <div>
-    <h2> Profile </h2>
-    <table class="table">
-      <tr>
-        <td>Id:</td>
-        <td>
-          <b th:text="${user.id}"></b>
-        </td>
-      </tr>
-      <tr>
-        <td>First name:</td>
-        <td>
-          <b th:text="${user.firstName}"></b>
-        </td>
-      </tr>
-      <tr>
-        <td>Last name</td>
-        <td>
-          <b th:text="${user.lastName}"></b>
-        </td>
-      </tr>
-      <tr>
-        <td>E-mail:</td>
-        <td>
-          <b th:text="${user.email}"></b>
-        </td>
-      </tr>
-      <tr>
-        <td>Role:</td>
-        <td>
-          <b th:text="${user.role}"></b>
-        </td>
-      </tr>
-    </table>
-    <div>
-      <a th:href="@{|/users/${user.id}/update|}">  Edit   </a>
-      <a th:href="@{|/users/${user.id}/delete|}">  Remove  </a>
-      <a th:href="@{|/users/all|}">  Back to list  </a>
-    </div>
+<div style="text-align: center; margin-top: 30px;">
+  <h2>Profile</h2>
+  <table style="margin: 0 auto; width: 80%; border-collapse: collapse; border: 1px solid #ccc;">
+    <tr>
+      <td style="padding: 10px; border: 1px solid #ccc;"><b>Id:</b></td>
+      <td style="padding: 10px; border: 1px solid #ccc;" th:text="${user.id}"></td>
+    </tr>
+    <tr>
+      <td style="padding: 10px; border: 1px solid #ccc;"><b>First name:</b></td>
+      <td style="padding: 10px; border: 1px solid #ccc;" th:text="${user.firstName}"></td>
+    </tr>
+    <tr>
+      <td style="padding: 10px; border: 1px solid #ccc;"><b>Last name:</b></td>
+      <td style="padding: 10px; border: 1px solid #ccc;" th:text="${user.lastName}"></td>
+    </tr>
+    <tr>
+      <td style="padding: 10px; border: 1px solid #ccc;"><b>E-mail:</b></td>
+      <td style="padding: 10px; border: 1px solid #ccc;" th:text="${user.email}"></td>
+    </tr>
+    <tr>
+      <td style="padding: 10px; border: 1px solid #ccc;"><b>Role:</b></td>
+      <td style="padding: 10px; border: 1px solid #ccc;" th:text="${user.role}"></td>
+    </tr>
+  </table>
+  <div style="text-align: center; margin-top: 10px;">
+    <a style="margin-right: 10px;" class="btn btn-primary" th:href="@{|/users/${user.id}/update|}">Edit</a>
+    <a style="margin-right: 10px;" class="btn btn-danger" th:href="@{|/users/${user.id}/delete|}">Remove</a>
+    <a style="margin-right: 10px;" class="btn btn-default" th:href="@{|/users/all|}">Back to list</a>
+    <a class="btn btn-info" th:href="@{|/packages/${user.id}/all|}">User's Packages</a>
   </div>
 </div>
 </body>
