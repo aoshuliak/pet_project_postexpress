@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <style>
-        /* Добавленные стили */
         body {
             padding: 20px;
         }
@@ -44,7 +43,6 @@
             margin-top: 20px;
         }
 
-        /* Дополнительные стили для удобочитаемости */
         th, td {
             text-align: center;
         }
@@ -58,10 +56,10 @@
 </head>
 <body>
 <div class="col-md-offset-2 col-sm-8">
-    <h2>List of Users</h2>
+    <h2 th:text="#{list_of_users}">List of Users</h2>
     <form th:action="@{/register}" method="get">
         <div align="right">
-            <input class="btn-info btn-lg btn-register" type="submit" value="Register new User">
+            <input class="btn-info btn-lg btn-register" type="submit" th:text="#{register_user}">
         </div>
     </form>
     <br>
@@ -70,9 +68,9 @@
         <tr>
             <th scope="col">No.</th>
             <th scope="col">Id</th>
-            <th scope="col">Full name</th>
-            <th scope="col">E-mail</th>
-            <th scope="col" colspan="2">Operations</th>
+            <th scope="col" th:text="#{full_name}">Full name</th>
+            <th scope="col" th:text="#{email}">E-mail</th>
+            <th scope="col" colspan="2" th:text="#{operations}">Operations</th>
         </tr>
         </thead>
         <tbody>
@@ -85,10 +83,15 @@
             <td th:text="${user.email}"/>
 
             <td>
-                <a class="btn btn-edit" th:href="@{|/users/${user.id}/update|}">Edit</a>
+                <a class="btn btn-edit"
+                   th:href="@{|/users/${user.id}/update|}"
+                   th:text="#{edit}" >Edit</a>
             </td>
             <td>
-                <a class="btn btn-remove" th:href="@{|/users/${user.id}/delete|}" onclick="return confirmDelete()">Remove</a>
+                <a class="btn btn-remove"
+                   th:href="@{|/users/${user.id}/delete|}"
+                   onclick="return confirmDelete()"
+                    th:text="#{remove}">Remove</a>
             </td>
         </tr>
     </table>
