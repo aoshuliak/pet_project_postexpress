@@ -14,27 +14,27 @@
       <td style="padding: 10px; border: 1px solid #ccc;" th:text="${user.id}"></td>
     </tr>
     <tr>
-      <td style="padding: 10px; border: 1px solid #ccc;"><b>First name:</b></td>
+      <td style="padding: 10px; border: 1px solid #ccc;" th:text="#{first_name}"><b>First name:</b></td>
       <td style="padding: 10px; border: 1px solid #ccc;" th:text="${user.firstName}"></td>
     </tr>
     <tr>
-      <td style="padding: 10px; border: 1px solid #ccc;"><b>Last name:</b></td>
+      <td style="padding: 10px; border: 1px solid #ccc;" th:text="#{last_name}"><b>Last name:</b></td>
       <td style="padding: 10px; border: 1px solid #ccc;" th:text="${user.lastName}"></td>
     </tr>
     <tr>
-      <td style="padding: 10px; border: 1px solid #ccc;"><b>E-mail:</b></td>
+      <td style="padding: 10px; border: 1px solid #ccc;" th:text="#{email}"><b>E-mail:</b></td>
       <td style="padding: 10px; border: 1px solid #ccc;" th:text="${user.email}"></td>
     </tr>
     <tr>
-      <td style="padding: 10px; border: 1px solid #ccc;"><b>Role:</b></td>
+      <td style="padding: 10px; border: 1px solid #ccc;" th:text="#{role}"><b>Role:</b></td>
       <td style="padding: 10px; border: 1px solid #ccc;" th:text="${user.role}"></td>
     </tr>
   </table>
   <div style="text-align: center; margin-top: 10px;">
-    <a style="margin-right: 10px;" class="btn btn-primary" th:href="@{|/users/${user.id}/update|}">Edit</a>
-    <a style="margin-right: 10px;" class="btn btn-danger" th:href="@{|/users/${user.id}/delete|}">Remove</a>
-    <a style="margin-right: 10px;" class="btn btn-default" th:href="@{|/users/all|}">Back to list</a>
-    <a class="btn btn-info" th:href="@{|/packages/${user.id}/all|}">User's Packages</a>
+    <a style="margin-right: 10px;" class="btn btn-primary" th:href="@{|/users/${user.id}/update|}" th:text="#{edit}">Edit</a>
+    <a style="margin-right: 10px;" class="btn btn-danger" th:href="@{|/users/${user.id}/delete|}" th:text="#{remove}">Remove</a>
+    <a style="margin-right: 10px;" class="btn btn-default" th:href="@{|/users/all|}" th:text="#{back_to_list}">Back to list</a>
+    <a class="btn btn-info" th:href="@{|/packages/${user.id}/all|}" th:text="#{user_packages}">User's Packages</a>
   </div>
 </div>
 </body>
