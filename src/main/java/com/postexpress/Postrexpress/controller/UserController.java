@@ -36,7 +36,10 @@ public class UserController {
     public String read(@PathVariable long id,
                        Model model,
                        Authentication authentication) {
+        boolean isAdmin = authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ADMIN"));
         User user = userService.readById(id);
+        model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("user", user);
         return "user-info";
     }
