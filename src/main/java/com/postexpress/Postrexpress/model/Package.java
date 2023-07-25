@@ -1,6 +1,9 @@
 package com.postexpress.Postrexpress.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,7 +12,6 @@ import java.util.List;
 @Table(name = "packages")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class Package {
     @Id
@@ -22,11 +24,13 @@ public class Package {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @ManyToOne
+    @ManyToOne()
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "recipient")
     private User recipient;
 
-    @ManyToOne
+    @ManyToOne()
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "addresser")
     private User addresser;
 

@@ -4,6 +4,7 @@ import com.postexpress.Postrexpress.model.Package;
 import com.postexpress.Postrexpress.model.User;
 import com.postexpress.Postrexpress.repository.PackageRepository;
 import com.postexpress.Postrexpress.repository.UserRepository;
+import com.postexpress.Postrexpress.service.PackageService;
 import com.postexpress.Postrexpress.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -20,11 +21,11 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
-    @Autowired
-    private PackageRepository packageRepository;
+    private PackageService packageService;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PackageService packageService) {
         this.userRepository = userRepository;
+        this.packageService = packageService;
     }
 
     @Override
@@ -46,7 +47,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(long id) {
-        packageRepository.deleteAll();
         userRepository.delete(readById(id));
     }
 
