@@ -116,7 +116,7 @@ public class PackageController {
                          Authentication authentication) {
 
         Package oldPack = packageService.readById(packId);
-        User recipient = userService.readById(userId);
+        User recipient = userService.readById(newUserId);
 
         pack.setAddresser(oldPack.getAddresser());
         pack.setRecipient(recipient);
