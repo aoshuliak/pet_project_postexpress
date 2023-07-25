@@ -57,11 +57,7 @@
 <body>
 <div class="col-md-offset-2 col-sm-8">
     <h2 th:text="#{list_of_users}">List of Users</h2>
-    <form th:action="@{/register}" method="get">
-        <div align="right">
-            <input class="btn-info btn-lg btn-register" type="submit" th:text="#{register_user}">
-        </div>
-    </form>
+        <a class="btn-info btn-lg btn-register" th:href="@{/register}" type="submit" th:text="#{register_user}"/>
     <br>
     <table class="table">
         <thead>
@@ -85,13 +81,13 @@
             <td>
                 <a class="btn btn-edit"
                    th:href="@{|/users/${user.id}/update|}"
-                   th:text="#{edit}" >Edit</a>
+                   th:text="#{edit}" ></a>
             </td>
             <td>
                 <a class="btn btn-remove"
                    th:href="@{|/users/${user.id}/delete|}"
                    onclick="return confirmDelete()"
-                    th:text="#{remove}">Remove</a>
+                    th:text="#{remove}"></a>
             </td>
         </tr>
     </table>
