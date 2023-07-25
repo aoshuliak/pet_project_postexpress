@@ -25,6 +25,7 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     private long id;
 
     @Column(name = "first_name", nullable = false)
@@ -43,9 +44,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-//    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "addresser", cascade = CascadeType.REMOVE)
-//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Package> packages;
 
     public User(long id, String firstName, String lastName, String email, String password, Role role) {
