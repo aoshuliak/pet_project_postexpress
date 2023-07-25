@@ -36,7 +36,7 @@ public class UserController {
     public String read(@PathVariable long id,
                        Model model,
                        Authentication authentication) {
-        User user = userService.findByEmail(authentication.getName());
+        User user = userService.readById(id);
         model.addAttribute("user", user);
         return "user-info";
     }
@@ -46,7 +46,7 @@ public class UserController {
     public String update(@PathVariable long id,
                          Model model,
                          Authentication authentication) {
-        User user = userService.findByEmail(authentication.getName());
+        User user = userService.readById(id);
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
         return "update-user";
@@ -67,7 +67,7 @@ public class UserController {
             return "update-user";
         }
 
-        User user = userService.findByEmail(authentication.getName());
+        User user = userService.readById(id);
 
         User oldUser = userService.readById(id);
         String hashedPassword = passwordEncoder.encode(user.getPassword());
@@ -85,7 +85,7 @@ public class UserController {
     @PreAuthorize("authentication.principal.id == #id or hasAuthority('ADMIN')")
     public String delete(@PathVariable("id") long id,
                          Authentication authentication){
-        User user = userService.findByEmail(authentication.getName());
+        User user = userService.readById(id);
         userService.delete(id);
         return "redirect:/users/all";
     }
@@ -94,7 +94,6 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public String getAll(Model model,
                          Authentication authentication) {
-        User user = userService.findByEmail(authentication.getName());
         model.addAttribute("users", userService.getAll());
         return "users-list";
     }
