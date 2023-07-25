@@ -33,7 +33,7 @@
   <div style="text-align: center; margin-top: 10px;">
     <a style="margin-right: 10px;" class="btn btn-primary" th:href="@{|/users/${user.id}/update|}" th:text="#{edit}">Edit</a>
     <a style="margin-right: 10px;" class="btn btn-danger" th:href="@{|/users/${user.id}/delete|}" th:text="#{remove}">Remove</a>
-    <a style="margin-right: 10px;" class="btn btn-default" th:href="@{|/users/all|}" th:text="#{back_to_list}">Back to list</a>
+    <a style="margin-right: 10px;" class="btn btn-default" th:href="@{|/users/all|}" th:text="#{back_to_list}" th:if="${isAdmin}">Back to list</a>
     <a class="btn btn-info" th:href="@{|/packages/${user.id}/all|}" th:text="#{user_packages}">User's Packages</a>
   </div>
 </div>
