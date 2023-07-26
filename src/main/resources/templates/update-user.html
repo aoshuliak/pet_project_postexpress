@@ -9,7 +9,7 @@
 <body>
 <div class="col-md-offset-2">
 
-  <h2>Update Existing User</h2>
+  <h2 th:text="#{update_user}">Update User</h2>
 </div>
 <div>
   <form class="form-horizontal" method="post" th:action="@{|/users/${user.id}/update|}" th:object="${user}">
@@ -20,7 +20,7 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-2 control-label" for="firstName">First name:</label>
+      <label class="col-sm-2 control-label" for="firstName" th:text="#{first_name}">First name:</label>
       <div class="col-sm-8">
         <input type="text"
                class="form-control"
@@ -34,7 +34,7 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-2 control-label" for="last-name">Last name:</label>
+      <label class="col-sm-2 control-label" for="last-name" th:text="#{last_name}">Last name:</label>
       <div class="col-sm-8">
         <input class="form-control" id="last-name" th:field="*{lastName}" type="text"/>
         <small class="form-text text-muted"
@@ -43,7 +43,7 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-2 control-label" for="email">E-mail:</label>
+      <label class="col-sm-2 control-label" for="email" th:text="#{email}">E-mail:</label>
       <div class="col-sm-8">
         <input class="form-control" id="email" th:field="*{email}" type="email"/>
         <small class="form-text text-muted"
@@ -52,7 +52,7 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-2 control-label" >New Password:</label>
+      <label class="col-sm-2 control-label" th:text="#{new_password}">New Password:</label>
       <div class="col-sm-8">
         <input class="form-control" id="new-password" required th:field="*{password}" type="password"/>
         <small class="form-text text-muted"
@@ -61,7 +61,7 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-2 control-label" for="role">Role:</label>
+      <label class="col-sm-2 control-label" for="role" th:text="#{role}">Role:</label>
       <div class="col-sm-8">
         <select class="form-control" id="role" name="role">
                         <span th:each="role : ${roles}">
