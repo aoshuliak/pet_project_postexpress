@@ -35,13 +35,28 @@
     </style>
 </head>
 <body>
-<h1>Package info</h1>
-<div class="package-info">
-    <p><strong>Package Name:</strong> <span th:text="${package.name}"></span></p>
-    <p><strong>Package Description:</strong> <span th:text="${package.description}"></span></p>
-    <p><strong>Package Status:</strong> <span th:text="${status}"></span></p>
-    <p><strong>Package Recipient:</strong> <span th:text="${package.recipient.firstName} + ' ' + ${package.recipient.lastName}"></span></p>
-    <p><strong>Package Addresser:</strong> <span th:text="${package.addresser.firstName} + ' ' + ${package.addresser.lastName}"></span></p>
-</div>
+<h1 th:text="#{package_info}">Package info</h1>
+<table style="margin: 0 auto; width: 80%; border-collapse: collapse; border: 1px solid #ccc;">
+    <tr>
+        <td style="padding: 10px; border: 1px solid #ccc;" th:text="#{name}"><b></b></td>
+        <td style="padding: 10px; border: 1px solid #ccc;" th:text="${package.name}"></td>
+    </tr>
+    <tr>
+        <td style="padding: 10px; border: 1px solid #ccc;" th:text="#{description}"><b>Last name:</b></td>
+        <td style="padding: 10px; border: 1px solid #ccc;" th:text="${package.description}"></td>
+    </tr>
+    <tr>
+        <td style="padding: 10px; border: 1px solid #ccc;" th:text="#{status}"><b>E-mail:</b></td>
+        <td style="padding: 10px; border: 1px solid #ccc;" th:text="${status}"></td>
+    </tr>
+    <tr>
+        <td style="padding: 10px; border: 1px solid #ccc;" th:text="#{recipient}"><b>Role:</b></td>
+        <td style="padding: 10px; border: 1px solid #ccc;" th:text="${package.recipient.firstName} + ' ' + ${package.recipient.lastName}"></td>
+    </tr>
+    <tr>
+        <td style="padding: 10px; border: 1px solid #ccc;" th:text="#{adresser}"><b>Role:</b></td>
+        <td style="padding: 10px; border: 1px solid #ccc;" th:text="${package.addresser.firstName} + ' ' + ${package.addresser.lastName}"></td>
+    </tr>
+</table>
 </body>
 </html>
