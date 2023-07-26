@@ -62,21 +62,21 @@
     </style>
 </head>
 <body>
-<h1>Update Package</h1>
+<h1 th:text="#{update_package}">Update Package</h1>
 <form th:href="@{/packages/{user_id}/update/{pack_id}(user_id=${user_id}, pack_id=${package.id})}" method="post" onsubmit="return validateForm()">
     <input type="hidden" th:field="*{package.id}">
     <div class="form-group">
-        <label>Package Name:</label>
+        <label th:text="#{package_name}">Package Name:</label>
         <input type="text" th:field="*{package.name}" pattern="^[A-Za-z0-9]{3,12}$" title="Only letters and numbers with size from 3 to 12 size are allowed" required>
         <div class="error-message" id="nameError"></div>
     </div>
     <div class="form-group">
-        <label>Package Description:</label>
+        <label th:text="#{package_description}">Package Description:</label>
         <input type="text" th:field="*{package.description}" pattern="^[A-Za-z0-9 ]{1,255}$" title="Only letters, numbers and spaces up to 255 size are allowed" required>
         <div class="error-message" id="descriptionError"></div>
     </div>
     <div class="form-group">
-        <label for="status">Package Status:</label>
+        <label for="status" th:text="#{package_status}">Package Status:</label>
         <select id="status" name="status" required>
             <option value="" selected disabled>Select Status</option>
             <option th:each="status : ${status}" th:value="${status}" th:text="${status}"></option>
@@ -84,7 +84,7 @@
         <div class="error-message" id="statusError"></div>
     </div>
     <div class="form-group">
-        <label for="users">Package Recipients:</label>
+        <label for="users" th:text="#{package_recipients}">Package Recipients:</label>
         <select id="users" name="users" required>
             <option value="" selected disabled>Select Recipient</option>
             <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.firstName} + ' ' + ${user.lastName}"></option>
