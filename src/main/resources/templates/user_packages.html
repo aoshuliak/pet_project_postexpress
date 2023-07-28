@@ -60,9 +60,6 @@
 <body>
 <h1>User Packages</h1>
 <p th:text="#{adresser}">Adresser:</p><span th:text="${user}"></span>
-<tr>
-    <a th:href="@{/packages/{user_id}/create(user_id=${user_id})}" th:text="#{create}">Create</a>
-</tr>
 <table>
     <thead>
     <tr>
@@ -83,5 +80,8 @@
     </tr>
     </tbody>
 </table>
+<br>
+    <a th:href="@{/packages/{user_id}/create(user_id=${user_id})}" th:text="#{create}">Create</a>
+</br>
 </body>
 </html>
