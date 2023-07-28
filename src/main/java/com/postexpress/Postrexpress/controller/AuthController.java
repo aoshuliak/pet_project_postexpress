@@ -85,4 +85,9 @@ public class AuthController {
     public String homePage(Model model) {
         return "home";
     }
+
+    @GetMapping("/logout")
+    public String logout(){
+        return "home";
+    }
 }
