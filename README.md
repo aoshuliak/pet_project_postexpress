@@ -2,6 +2,11 @@
 A simple web application using Spring Framework, Spring Data, Spring Boot, Spring MVC, Spring Security.
 Users can do actions such as: create package, delete it, update or to view info about.
 
+Credentials:
+Admin: mike@mail.com / password: 1111
+User: nick@mail.com / password: 2222
+User: nora@mail.com / password: 3333
+
 Dependencies:
 - Spring Data Jpa
 - Spring Security
